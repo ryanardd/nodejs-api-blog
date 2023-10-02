@@ -1,4 +1,4 @@
-import { ResponseError } from "../error/response-error";
+import { ResponseError } from "../error/response-error.js";
 
 export const errorMiddleware = (err, req, res, next) => {
     if (!err) {
