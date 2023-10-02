@@ -5,7 +5,8 @@
   "main": "./src/main.js",
   "type": "module",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "nodemon src/main.js"
   },
   "jest": {
     "transform": {
