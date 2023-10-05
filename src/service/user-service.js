@@ -1,9 +1,13 @@
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { loginUserValidation, registerUserValidation } from "../validation/user-validation.js";
+import {
+    loginUserValidation,
+    registerUserValidation,
+    updateUserValidation,
+} from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 
 const register = async (request) => {
     request = validate(registerUserValidation, request);
@@ -53,26 +57,69 @@ const login = async (request) => {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    const token = jwt.sign(user.username, process.env.ACCESS_TOKEN_SECRET);
+    // const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
 
-    user.token = token;
+    // user.token = token;
 
-    return user;
+    // return user;
 
-    // return prismaClient.user.findUnique({
-    //     where: {
-    //         username: user.username,
-    //     },
-    //     select: {
-    //         name: true,
-    //         username: true,
-    //         email: true,
-    //         token: true,
-    //     },
-    // });
+    return prismaClient.user.findUnique({
+        where: {
+            username: user.username,
+        },
+        select: {
+            name: true,
+            username: true,
+            email: true,
+        },
+    });
+};
+
+const update = async (request) => {
+    request = validate(updateUserValidation, request);
+
+    const countUser = await prismaClient.user.count({
+        where: {
+            id_user: request,
+        },
+    });
+
+    if (countUser !== 1) {
+        throw new ResponseError(404, "Username is not found");
+    }
+
+    const data = {};
+    if (request.username) {
+        data.username = request.username;
+    }
+
+    if (request.name) {
+        data.name = request.name;
+    }
+
+    if (request.email) {
+        data.email = request.email;
+    }
+
+    if (request.password) {
+        data.password = await bcrypt.hash(request.password, 10);
+    }
+
+    return prismaClient.user.update({
+        where: {
+            id_user: request,
+        },
+        data: data,
+        select: {
+            username: true,
+            name: true,
+            email: true,
+        },
+    });
 };
 
 export default {
     register,
     login,
+    update,
 };
