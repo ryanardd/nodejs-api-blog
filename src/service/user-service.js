@@ -7,7 +7,7 @@ import {
 } from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const register = async (request) => {
     request = validate(registerUserValidation, request);
@@ -57,9 +57,15 @@ const login = async (request) => {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    // const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
+    const token = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
 
-    // user.token = token;
+    user.token = token;
+
+    // const header = {
+    //     headers: {
+    //         Authorization: `Bearer ${token}`,
+    //     },
+    // };
 
     // return user;
 
@@ -80,7 +86,7 @@ const update = async (request) => {
 
     const countUser = await prismaClient.user.count({
         where: {
-            id_user: request,
+            username: request.username,
         },
     });
 
@@ -107,7 +113,7 @@ const update = async (request) => {
 
     return prismaClient.user.update({
         where: {
-            id_user: request,
+            username: data.username,
         },
         data: data,
         select: {

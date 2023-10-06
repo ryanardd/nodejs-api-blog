@@ -17,11 +17,19 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
     try {
         const user = req.user;
+        // const token = req.user.token;
+        // user.token = token;
 
-        const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
+        // const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
 
         const result = await userService.login(req.body);
-        res.header("auth-token", token);
+        // res.header("Authorization", userService.login(result));
+        const token = await userService.login({
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        res.setHeader("Authorization", `Bearer ${token}`);
         res.status(200).json({
             data: result,
         });
