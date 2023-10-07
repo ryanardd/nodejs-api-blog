@@ -20,10 +20,10 @@ const login = async (req, res, next) => {
 
         const token = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
 
-        user.token = token;
+        // user.token = token;
 
         const result = await userService.login(user);
-        res.header("Authorization", user.token);
+        res.header("Authorization", token);
         res.status(200).json({
             data: result,
         });
