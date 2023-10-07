@@ -16,20 +16,14 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
-        const user = req.user;
-        // const token = req.user.token;
-        // user.token = token;
+        const user = req.body;
 
-        // const token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET);
+        const token = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
 
-        const result = await userService.login(req.body);
-        // res.header("Authorization", userService.login(result));
-        const token = await userService.login({
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        res.setHeader("Authorization", `Bearer ${token}`);
+        user.token = token;
+
+        const result = await userService.login(user);
+        res.header("Authorization", user.token);
         res.status(200).json({
             data: result,
         });
@@ -42,12 +36,13 @@ const update = async (req, res, next) => {
     try {
         const request = req.body;
         const result = await userService.update(request);
+        console.info(result);
         res.status(200).json({
             data: result,
             message: "Updated Successfuly",
         });
     } catch (error) {
-        next();
+        next(error);
     }
 };
 

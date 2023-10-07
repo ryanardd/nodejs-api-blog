@@ -57,18 +57,6 @@ const login = async (request) => {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    const token = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
-
-    user.token = token;
-
-    // const header = {
-    //     headers: {
-    //         Authorization: `Bearer ${token}`,
-    //     },
-    // };
-
-    // return user;
-
     return prismaClient.user.findUnique({
         where: {
             username: user.username,
@@ -82,11 +70,12 @@ const login = async (request) => {
 };
 
 const update = async (request) => {
-    request = validate(updateUserValidation, request);
+    const user = validate(updateUserValidation, request);
 
     const countUser = await prismaClient.user.count({
         where: {
-            username: request.username,
+            username: user.username,
+            // id_user: user.id_user,
         },
     });
 
@@ -95,25 +84,28 @@ const update = async (request) => {
     }
 
     const data = {};
-    if (request.username) {
-        data.username = request.username;
+    if (user.username) {
+        data.username = user.username;
     }
 
-    if (request.name) {
-        data.name = request.name;
+    if (user.name) {
+        data.name = user.name;
     }
 
-    if (request.email) {
-        data.email = request.email;
+    if (user.email) {
+        data.email = user.email;
     }
 
-    if (request.password) {
-        data.password = await bcrypt.hash(request.password, 10);
+    if (user.password) {
+        data.password = await bcrypt.hash(user.password, 10);
     }
 
-    return prismaClient.user.update({
+    console.info(data);
+
+    const update = await prismaClient.user.update({
         where: {
             username: data.username,
+            // id_user: data.id_user,
         },
         data: data,
         select: {
@@ -122,6 +114,8 @@ const update = async (request) => {
             email: true,
         },
     });
+
+    return update;
 };
 
 export default {

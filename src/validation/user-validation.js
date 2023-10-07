@@ -13,8 +13,8 @@ export const loginUserValidation = Joi.object({
 });
 
 export const updateUserValidation = Joi.object({
+    username: Joi.string().min(3).max(100).required(),
     name: Joi.string().min(3).max(100).optional(),
-    username: Joi.string().min(3).max(100).optional(),
     email: Joi.string().email().optional(),
     password: Joi.string().min(3).max(100).optional(),
 });
