@@ -1,3 +1,4 @@
+import authService from "../service/auth-service.js";
 import userService from "../service/user-service.js";
 import jwt from "jsonwebtoken";
 
@@ -18,11 +19,8 @@ const login = async (req, res, next) => {
     try {
         const user = req.body;
 
-        const token = jwt.sign({ user: user.username }, process.env.ACCESS_TOKEN_SECRET);
-
-        // user.token = token;
-
         const result = await userService.login(user);
+        const token = await authService.generateToken(result);
         res.header("Authorization", token);
         res.status(200).json({
             data: result,
@@ -35,7 +33,9 @@ const login = async (req, res, next) => {
 const update = async (req, res, next) => {
     try {
         const request = req.body;
+
         const result = await userService.update(request);
+
         console.info(result);
         res.status(200).json({
             data: result,
