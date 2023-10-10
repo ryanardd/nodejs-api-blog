@@ -1,0 +1,18 @@
+
+POST http://localhost:3000/api/user/login
+Content-Type: application/json
+
+{
+    "username": "usertest",
+    "password": "rahasia"
+}
+
+###
+PATCH  http://localhost:3000/api/user/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmVsYSIsInVzZXJuYW1lIjoidXNlcnRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk2OTQ5MzA2fQ.AT7EUQoo0UN_lgNK6e0xBIKGOo4HYZUYxLvCs5SQ1bc
+Content-Type: application/json
+
+{
+    "username": "user",
+    "password": "rahasia"
+}
