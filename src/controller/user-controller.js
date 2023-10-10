@@ -20,7 +20,7 @@ const login = async (req, res, next) => {
         const user = req.body;
 
         const result = await userService.login(user);
-        const token = await authService.generateToken(result);
+        const token = authService.generateToken(result);
         res.header("Authorization", token);
         res.status(200).json({
             data: result,
