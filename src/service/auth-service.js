@@ -1,10 +1,7 @@
 import jwt from "jsonwebtoken";
 
-const generateToken = async (user) => {
-    const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-
-    user.token = token;
-    return token;
+const generateToken = (user) => {
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 };
 
 export default {
