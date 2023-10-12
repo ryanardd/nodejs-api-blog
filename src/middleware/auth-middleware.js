@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 
 export const authMiddleware = async (req, res, next) => {
-    const bearer = req.headers["authorization"];
-    const token = bearer && bearer.split(" ")[1];
+    const token = req.cookies.authToken;
 
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {

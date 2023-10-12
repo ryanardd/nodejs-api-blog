@@ -15,15 +15,30 @@ const register = async (req, res, next) => {
     }
 };
 
+const user = async (req, res, next) => {
+    try {
+        const userAuth = req.cookies.authToken;
+        const result = await userService.get(userAuth);
+        res.status(200).json({
+            data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const login = async (req, res, next) => {
     try {
         const user = req.body;
 
         const result = await userService.login(user);
         const token = authService.generateToken(result);
-        res.header("Authorization", token);
+        res.cookie("authToken", token, {
+            httpOnly: true,
+        });
         res.status(200).json({
             data: result,
+            // token: token,
         });
     } catch (error) {
         next(error);
@@ -48,6 +63,7 @@ const update = async (req, res, next) => {
 
 export default {
     register,
+    user,
     login,
     update,
 };

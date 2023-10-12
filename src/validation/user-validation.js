@@ -7,6 +7,8 @@ export const registerUserValidation = Joi.object({
     password: Joi.string().min(3).max(100).required(),
 });
 
+export const getUserValidation = Joi.string();
+
 export const loginUserValidation = Joi.object({
     username: Joi.string().min(3).max(100).required(),
     password: Joi.string().min(3).max(100).required(),

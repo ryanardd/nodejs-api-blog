@@ -1,6 +1,7 @@
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
 import {
+    getUserValidation,
     loginUserValidation,
     registerUserValidation,
     updateUserValidation,
@@ -34,6 +35,16 @@ const register = async (request) => {
     });
 };
 
+const get = async (user) => {
+    return prismaClient.user.findMany({
+        select: {
+            username: true,
+            id_user: true,
+            name: true,
+        },
+    });
+};
+
 const login = async (request) => {
     request = validate(loginUserValidation, request);
 
@@ -42,6 +53,8 @@ const login = async (request) => {
             username: request.username,
         },
         select: {
+            id_user: true,
+            name: true,
             username: true,
             password: true,
         },
@@ -57,16 +70,26 @@ const login = async (request) => {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    return prismaClient.user.findUnique({
-        where: {
-            username: user.username,
-        },
-        select: {
-            name: true,
-            username: true,
-            email: true,
-        },
-    });
+    const id = user.id_user;
+    const name = user.name;
+    const username = user.username;
+
+    const token = jwt.sign({ id, name, username }, process.env.ACCESS_TOKEN_SECRET);
+
+    user.token = token;
+
+    return user;
+
+    // return prismaClient.user.findUnique({
+    //     where: {
+    //         username: user.username,
+    //     },
+    //     select: {
+    //         name: true,
+    //         username: true,
+    //         email: true,
+    //     },
+    // });
 };
 
 const update = async (request) => {
@@ -120,6 +143,7 @@ const update = async (request) => {
 
 export default {
     register,
+    get,
     login,
     update,
 };
