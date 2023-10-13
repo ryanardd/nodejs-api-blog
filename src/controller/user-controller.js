@@ -1,4 +1,3 @@
-import authService from "../service/auth-service.js";
 import userService from "../service/user-service.js";
 import jwt from "jsonwebtoken";
 
@@ -32,12 +31,14 @@ const login = async (req, res, next) => {
         const user = req.body;
 
         const result = await userService.login(user);
-        const token = authService.generateToken(result);
-        res.cookie("authToken", token, {
+        const iat = Math.floor(Date.now() / 1000);
+        const token = jwt.sign({ userId: result.username, iat }, process.env.ACCESS_TOKEN_SECRET);
+        res.cookie("token", token, {
             httpOnly: true,
+            expires: "50s",
         });
-        res.status(200).json({
-            data: result,
+        res.status(200).send({
+            token,
             // token: token,
         });
     } catch (error) {
@@ -47,7 +48,7 @@ const login = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const request = req.body;
+        const request = req.user;
 
         const result = await userService.update(request);
 

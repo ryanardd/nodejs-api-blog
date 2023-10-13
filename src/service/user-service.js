@@ -48,48 +48,36 @@ const get = async (user) => {
 const login = async (request) => {
     request = validate(loginUserValidation, request);
 
-    const user = await prismaClient.user.findUnique({
+    const users = await prismaClient.user.findUnique({
         where: {
             username: request.username,
         },
-        select: {
-            id_user: true,
-            name: true,
-            username: true,
-            password: true,
-        },
     });
 
-    if (!user) {
+    if (!users) {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    const comparePass = await bcrypt.compare(request.password, user.password);
+    const comparePass = await bcrypt.compare(request.password, users.password);
 
     if (!comparePass) {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    const id = user.id_user;
-    const name = user.name;
-    const username = user.username;
+    console.info(users);
 
-    const token = jwt.sign({ id, name, username }, process.env.ACCESS_TOKEN_SECRET);
+    // return users;
 
-    user.token = token;
-
-    return user;
-
-    // return prismaClient.user.findUnique({
-    //     where: {
-    //         username: user.username,
-    //     },
-    //     select: {
-    //         name: true,
-    //         username: true,
-    //         email: true,
-    //     },
-    // });
+    return prismaClient.user.findUnique({
+        where: {
+            username: users.username,
+        },
+        select: {
+            name: true,
+            username: true,
+            email: true,
+        },
+    });
 };
 
 const update = async (request) => {

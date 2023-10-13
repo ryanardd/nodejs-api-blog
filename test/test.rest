@@ -11,13 +11,13 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3000/api/user/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJ0ZXN0IiwiaWF0IjoxNjk3MTI3NzAxfQ.you000efT8RA5fR1pj3Kzf6k383VqZNcTdtYCKWmMCU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmVszdsdasdYSIsInVzZXJuYW1lIjoidXNlcnRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk3MjEyMTQ1fQ.WCpZArbXCUXhTWBH4vN06cvtf3VRs_cs-_Hhj1JJjWk
 Content-Type: application/json
 
 
 ###
 PATCH  http://localhost:3000/api/user/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmVsYSIsInVzZXJuYW1lIjoidXNlcnRlc3QiLCJpYXQiOjE2OTcxMjMxNzF9.GYWfo8Z6WsdIUUigPxQZBmfDWMJVrD3g-N_EE2Z7JKk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYmVsYSIsInVzZXJuYW1lIjoidXNlcnRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk3MjEyOTg3fQ.F5Ro_cFnuVZjV7iP25wITkhsChFBrHM-4FbHER4uKPw
 Content-Type: application/json
 
 {
