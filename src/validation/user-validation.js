@@ -15,7 +15,8 @@ export const loginUserValidation = Joi.object({
 });
 
 export const updateUserValidation = Joi.object({
-    username: Joi.string().min(3).max(100).required(),
+    // id: Joi.number().min(1).positive().required(),
+    username: Joi.string().min(3).max(100).optional(),
     name: Joi.string().min(3).max(100).optional(),
     email: Joi.string().email().optional(),
     password: Joi.string().min(3).max(100).optional(),

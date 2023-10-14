@@ -1,3 +1,4 @@
+import { ResponseError } from "../error/response-error.js";
 import userService from "../service/user-service.js";
 import jwt from "jsonwebtoken";
 
@@ -30,17 +31,17 @@ const login = async (req, res, next) => {
     try {
         const user = req.body;
 
-        const result = await userService.login(user);
-        const iat = Math.floor(Date.now() / 1000);
-        const token = jwt.sign({ userId: result.username, iat }, process.env.ACCESS_TOKEN_SECRET);
+        const payload = await userService.login(user);
+        const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+
         res.cookie("token", token, {
             httpOnly: true,
-            expires: "50s",
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         });
-        res.status(200).send({
-            token,
+        res.status(200).send(
+            payload
             // token: token,
-        });
+        );
     } catch (error) {
         next(error);
     }
@@ -48,9 +49,12 @@ const login = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const request = req.user;
+        let { id } = req.params;
+        const request = req.body;
+        console.log(id);
+        // console.log(request);
 
-        const result = await userService.update(request);
+        const result = await userService.update(id, request);
 
         console.info(result);
         res.status(200).json({

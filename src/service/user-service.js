@@ -73,6 +73,7 @@ const login = async (request) => {
             username: users.username,
         },
         select: {
+            id_user: true,
             name: true,
             username: true,
             email: true,
@@ -80,46 +81,51 @@ const login = async (request) => {
     });
 };
 
-const update = async (request) => {
-    const user = validate(updateUserValidation, request);
+const update = async (user, request) => {
+    request = validate(updateUserValidation, request);
 
     const countUser = await prismaClient.user.count({
         where: {
-            username: user.username,
-            // id_user: user.id_user,
+            id_user: user.id,
         },
     });
+    // console.log(user);
+    // console.log(countUser);
+
+    if (!user) {
+        throw new ResponseError(404, "user null");
+    }
 
     if (countUser !== 1) {
-        throw new ResponseError(404, "Username is not found");
+        throw new ResponseError(404, "Id is notfound");
     }
 
     const data = {};
-    if (user.username) {
-        data.username = user.username;
+    if (request.username) {
+        data.username = request.username;
     }
 
-    if (user.name) {
-        data.name = user.name;
+    if (request.name) {
+        data.name = request.name;
     }
 
-    if (user.email) {
-        data.email = user.email;
+    if (request.email) {
+        data.email = request.email;
     }
 
-    if (user.password) {
-        data.password = await bcrypt.hash(user.password, 10);
+    if (request.password) {
+        data.password = await bcrypt.hash(request.password, 10);
     }
 
     console.info(data);
 
     const update = await prismaClient.user.update({
         where: {
-            username: data.username,
-            // id_user: data.id_user,
+            id_user: request,
         },
         data: data,
         select: {
+            id_user: true,
             username: true,
             name: true,
             email: true,

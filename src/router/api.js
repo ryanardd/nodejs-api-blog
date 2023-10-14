@@ -9,11 +9,10 @@ const route = new express.Router();
 //     next();
 // });
 route.post("/api/user/register/", userController.register);
-// route.use(authMiddleware);
 route.post("/api/user/login/", userController.login);
 
-route.get("/api/user/", userController.user);
-
-route.patch("/api/user/update", authMiddleware, userController.update);
+// route.use(authMiddleware);
+route.patch("/api/user/update/:id", userController.update);
+// route.get("/api/user/", userController.user);
 
 export { route };
