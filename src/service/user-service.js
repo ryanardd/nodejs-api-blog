@@ -10,6 +10,16 @@ import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
+const get = async (user) => {
+    return prismaClient.user.findMany({
+        select: {
+            username: true,
+            id_user: true,
+            name: true,
+        },
+    });
+};
+
 const register = async (request) => {
     request = validate(registerUserValidation, request);
 
@@ -31,16 +41,6 @@ const register = async (request) => {
             name: true,
             username: true,
             email: true,
-        },
-    });
-};
-
-const get = async (user) => {
-    return prismaClient.user.findMany({
-        select: {
-            username: true,
-            id_user: true,
-            name: true,
         },
     });
 };
@@ -135,9 +135,12 @@ const update = async (user, request) => {
     return update;
 };
 
+const logout = async (request) => {};
+
 export default {
-    register,
     get,
+    register,
     login,
     update,
+    logout,
 };

@@ -2,11 +2,10 @@ import { ResponseError } from "../error/response-error.js";
 import userService from "../service/user-service.js";
 import jwt from "jsonwebtoken";
 
-const register = async (req, res, next) => {
+const get = async (req, res, next) => {
     try {
-        const request = req.body;
-
-        const result = await userService.register(request);
+        const userAuth = req.cookies.authToken;
+        const result = await userService.get(userAuth);
         res.status(200).json({
             data: result,
         });
@@ -15,10 +14,11 @@ const register = async (req, res, next) => {
     }
 };
 
-const user = async (req, res, next) => {
+const register = async (req, res, next) => {
     try {
-        const userAuth = req.cookies.authToken;
-        const result = await userService.get(userAuth);
+        const request = req.body;
+
+        const result = await userService.register(request);
         res.status(200).json({
             data: result,
         });
@@ -66,9 +66,17 @@ const update = async (req, res, next) => {
     }
 };
 
+const logout = async (req, res, next) => {
+    try {
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
+    get,
     register,
-    user,
     login,
     update,
+    logout,
 };
