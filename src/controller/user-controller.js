@@ -4,8 +4,9 @@ import jwt from "jsonwebtoken";
 
 const get = async (req, res, next) => {
     try {
-        const userAuth = req.cookies.authToken;
-        const result = await userService.get(userAuth);
+        const id = req.params.id;
+
+        const result = await userService.get(id);
         res.status(200).json({
             data: result,
         });
@@ -49,9 +50,8 @@ const login = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        let { id } = req.params;
+        const id = req.params.id;
         const request = req.body;
-        console.log(id);
         // console.log(request);
 
         const result = await userService.update(id, request);
@@ -68,6 +68,7 @@ const update = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
+        // res.clearCookie()
     } catch (error) {
         next(error);
     }

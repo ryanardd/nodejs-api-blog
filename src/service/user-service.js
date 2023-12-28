@@ -8,16 +8,21 @@ import {
 } from "../validation/user-validation.js";
 import { validate } from "../validation/validation.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 
-const get = async (user) => {
-    return prismaClient.user.findMany({
-        select: {
-            username: true,
-            id_user: true,
-            name: true,
+const get = async (id) => {
+    id = validate(getUserValidation, id);
+
+    const data = await prismaClient.user.findUnique({
+        where: {
+            id_user: id,
         },
     });
+
+    if (!data) {
+        throw new ResponseError(404, "user is not found");
+    }
+
+    return data;
 };
 
 const register = async (request) => {
@@ -81,24 +86,20 @@ const login = async (request) => {
     });
 };
 
-const update = async (user, request) => {
-    request = validate(updateUserValidation, request);
+const update = async (id, request) => {
+    id = validate(getUserValidation, id);
 
     const countUser = await prismaClient.user.count({
         where: {
-            id_user: user.id,
+            id_user: id,
         },
     });
-    // console.log(user);
-    // console.log(countUser);
-
-    if (!user) {
-        throw new ResponseError(404, "user null");
-    }
 
     if (countUser !== 1) {
-        throw new ResponseError(404, "Id is notfound");
+        throw new ResponseError(404, "Id is not found");
     }
+
+    request = validate(updateUserValidation, request);
 
     const data = {};
     if (request.username) {
@@ -117,11 +118,9 @@ const update = async (user, request) => {
         data.password = await bcrypt.hash(request.password, 10);
     }
 
-    console.info(data);
-
-    const update = await prismaClient.user.update({
+    return prismaClient.user.update({
         where: {
-            id_user: request,
+            id_user: id,
         },
         data: data,
         select: {
@@ -131,8 +130,6 @@ const update = async (user, request) => {
             email: true,
         },
     });
-
-    return update;
 };
 
 const logout = async (request) => {};

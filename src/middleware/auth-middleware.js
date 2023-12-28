@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ResponseError } from "../error/response-error";
+import { ResponseError } from "../error/response-error.js";
 
 export const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;

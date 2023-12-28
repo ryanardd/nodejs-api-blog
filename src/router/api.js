@@ -6,10 +6,10 @@ import blogController from "../controller/blog-controller.js";
 const route = new express.Router();
 
 // users
-route.post("/api/user/register/", userController.register);
-route.post("/api/user/login/", userController.login);
+route.post("/user/register/", userController.register);
+route.post("/user/login/", userController.login);
 route.use(authMiddleware);
-route.get("/users", userController.get);
+route.get("/user/:id", userController.get);
 route.patch("/user/updated/:id", userController.update);
 route.delete("/user/logout", userController.logout);
 
