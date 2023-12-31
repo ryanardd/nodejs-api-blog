@@ -39,10 +39,7 @@ const login = async (req, res, next) => {
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         });
-        res.status(200).send(
-            payload
-            // token: token,
-        );
+        res.status(200).send(payload);
     } catch (error) {
         next(error);
     }
@@ -52,7 +49,6 @@ const update = async (req, res, next) => {
     try {
         const id = req.params.id;
         const request = req.body;
-        // console.log(request);
 
         const result = await userService.update(id, request);
 
@@ -68,7 +64,9 @@ const update = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
     try {
-        // res.clearCookie()
+        res.status(200).clearCookie("token").json({
+            message: "Logout Successfuly",
+        });
     } catch (error) {
         next(error);
     }

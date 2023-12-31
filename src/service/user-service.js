@@ -16,6 +16,9 @@ const get = async (id) => {
         where: {
             id_user: id,
         },
+        include: {
+            post: true,
+        },
     });
 
     if (!data) {
@@ -132,12 +135,9 @@ const update = async (id, request) => {
     });
 };
 
-const logout = async (request) => {};
-
 export default {
     get,
     register,
     login,
     update,
-    logout,
 };
