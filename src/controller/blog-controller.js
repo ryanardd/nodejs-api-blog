@@ -1,3 +1,5 @@
+import blogService from "../service/blog-service.js";
+
 const getBlog = async (req, res, next) => {
     try {
     } catch (error) {
@@ -14,6 +16,13 @@ const getBlogId = async (req, res, next) => {
 
 const createBlog = async (req, res, next) => {
     try {
+        const user = req.user;
+        const request = req.body;
+
+        const result = await blogService.createBlog(user, request);
+        res.status(200).json({
+            data: result,
+        });
     } catch (error) {
         next(error);
     }

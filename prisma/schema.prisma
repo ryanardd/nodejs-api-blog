@@ -28,7 +28,7 @@ model Post {
     id_post    Int      @id @default(autoincrement())
     title      String   @db.VarChar(100)
     content    String   @db.Text
-    img        Bytes    @db.Blob
+    img        String   @db.VarChar(255)
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     author_id  Int
