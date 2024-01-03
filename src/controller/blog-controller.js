@@ -1,4 +1,6 @@
+import { ResponseError } from "../error/response-error.js";
 import blogService from "../service/blog-service.js";
+import fs from "fs";
 
 const getBlog = async (req, res, next) => {
     try {
@@ -16,15 +18,25 @@ const getBlogId = async (req, res, next) => {
 
 const createBlog = async (req, res, next) => {
     try {
-        const user = req.user;
-        const request = req.body;
+        if (!req.file) {
+            throw new ResponseError(Error.name, "please, input field image");
+        }
 
-        const result = await blogService.createBlog(user, request);
+        const user = req.user;
+        const title = req.body.title;
+        const content = req.body.content;
+        const image = req.file.path;
+
+        const result = await blogService.createBlog(user, { title, content, image });
         res.status(200).json({
             data: result,
         });
     } catch (error) {
         next(error);
+
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
     }
 };
 

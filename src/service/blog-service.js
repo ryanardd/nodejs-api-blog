@@ -1,4 +1,5 @@
 import { prismaClient } from "../app/database.js";
+import { ResponseError } from "../error/response-error.js";
 import { createBlogValidation } from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
 
@@ -7,13 +8,38 @@ const getBlog = async (request) => {};
 const getBlogId = async (request) => {};
 
 const createBlog = async (user, request) => {
-    request = validate(createBlogValidation, request);
+    user = await prismaClient.user.findUnique({
+        where: {
+            id_user: user,
+        },
+    });
 
-    request.id = user.author_id;
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
+
+    const data = validate(createBlogValidation, request);
+
+    if (!data) {
+        throw new ResponseError(400, "data null");
+    }
 
     return prismaClient.post.create({
-        data: request,
+        data: {
+            author_id: user,
+            title: data.title,
+            content: data.content,
+            img: data.image,
+        },
         include: {
+            user: true,
+        },
+        select: {
+            id_post: true,
+            title: true,
+            content: true,
+            img: true,
+            author_id: true,
             user: true,
         },
     });
