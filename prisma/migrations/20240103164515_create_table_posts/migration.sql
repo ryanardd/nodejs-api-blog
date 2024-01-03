@@ -3,7 +3,7 @@ CREATE TABLE `posts` (
     `id_post` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(100) NOT NULL,
     `content` TEXT NOT NULL,
-    `img` BLOB NOT NULL,
+    `img` VARCHAR(255) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `author_id` INTEGER NOT NULL,
