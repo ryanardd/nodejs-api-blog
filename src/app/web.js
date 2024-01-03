@@ -4,12 +4,22 @@ import { route } from "../router/api.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
+import multer from "multer";
+import { fileFilter, filterStorage } from "../service/upload-image.js";
 
 dotenv.config();
 export const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
+
+web.use(
+    multer({
+        storage: filterStorage,
+        fileFilter: fileFilter,
+        limits: { fileSize: 5 * 1024 * 1024 },
+    }).single("image")
+);
 
 app.use(route);
 
