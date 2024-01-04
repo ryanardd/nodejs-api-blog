@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.json());
 
-web.use(
+app.use(
     multer({
         storage: filterStorage,
         fileFilter: fileFilter,
