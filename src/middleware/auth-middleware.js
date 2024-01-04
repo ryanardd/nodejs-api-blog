@@ -1,8 +1,13 @@
 import jwt from "jsonwebtoken";
 import { ResponseError } from "../error/response-error.js";
+import fs from "fs";
 
 export const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
+
+    if (!token) {
+        fs.unlinkSync(req.file.path);
+    }
 
     if (!token) {
         return res.status(401).json({ message: "Token no provided" });
@@ -11,7 +16,7 @@ export const authMiddleware = (req, res, next) => {
             if (err) {
                 throw new ResponseError(401, "invalid token");
             } else {
-                req.user = decode.user;
+                req.user = decode;
                 next();
             }
         });

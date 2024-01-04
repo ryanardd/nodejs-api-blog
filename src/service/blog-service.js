@@ -10,7 +10,7 @@ const getBlogId = async (request) => {};
 const createBlog = async (user, request) => {
     user = await prismaClient.user.findUnique({
         where: {
-            id_user: user,
+            id_user: user.id_user,
         },
     });
 
@@ -26,13 +26,10 @@ const createBlog = async (user, request) => {
 
     return prismaClient.post.create({
         data: {
-            author_id: user,
+            author_id: user.id_user,
             title: data.title,
             content: data.content,
             img: data.image,
-        },
-        include: {
-            user: true,
         },
         select: {
             id_post: true,
