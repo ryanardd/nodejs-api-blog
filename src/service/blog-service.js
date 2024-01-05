@@ -3,7 +3,14 @@ import { ResponseError } from "../error/response-error.js";
 import { createBlogValidation } from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
 
-const getBlog = async (request) => {};
+const getBlog = async () => {
+    return prismaClient.user.findMany({
+        select: {
+            name: true,
+            post: true,
+        },
+    });
+};
 
 const getBlogId = async (request) => {};
 

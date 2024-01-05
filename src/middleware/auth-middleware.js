@@ -7,9 +7,6 @@ export const authMiddleware = (req, res, next) => {
 
     if (!token) {
         fs.unlinkSync(req.file.path);
-    }
-
-    if (!token) {
         return res.status(401).json({ message: "Token no provided" });
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {

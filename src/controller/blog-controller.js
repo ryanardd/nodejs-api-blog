@@ -4,6 +4,10 @@ import fs from "fs";
 
 const getBlog = async (req, res, next) => {
     try {
+        const result = await blogService.getBlog();
+        res.status(200).json({
+            data: result,
+        });
     } catch (error) {
         next(error);
     }
