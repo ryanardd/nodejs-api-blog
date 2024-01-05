@@ -1,6 +1,6 @@
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { createBlogValidation } from "../validation/blog-validation.js";
+import { createBlogValidation, getIdBlogValidation } from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
 
 const getBlog = async () => {
@@ -12,7 +12,36 @@ const getBlog = async () => {
     });
 };
 
-const getBlogId = async (request) => {};
+const getBlogId = async (params) => {
+    params = validate(getIdBlogValidation, params);
+
+    const data = await prismaClient.post.findFirst({
+        where: {
+            id_post: params,
+        },
+        select: {
+            id_post: true,
+            title: true,
+            content: true,
+            img: true,
+            created_at: true,
+            author_id: true,
+            user: {
+                select: {
+                    id_user: true,
+                    username: true,
+                    email: true,
+                },
+            },
+        },
+    });
+
+    if (!data) {
+        throw new ResponseError(404, "data is not found");
+    }
+
+    return data;
+};
 
 const createBlog = async (user, request) => {
     user = await prismaClient.user.findUnique({

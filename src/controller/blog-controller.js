@@ -15,6 +15,13 @@ const getBlog = async (req, res, next) => {
 
 const getBlogId = async (req, res, next) => {
     try {
+        const params = req.params.id;
+
+        const result = await blogService.getBlogId(params);
+
+        res.status(200).json({
+            data: result,
+        });
     } catch (error) {
         next(error);
     }

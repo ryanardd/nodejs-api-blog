@@ -5,3 +5,5 @@ export const createBlogValidation = Joi.object({
     content: Joi.string().min(3).required(),
     image: Joi.any().required(),
 });
+
+export const getIdBlogValidation = Joi.number().positive().required();
