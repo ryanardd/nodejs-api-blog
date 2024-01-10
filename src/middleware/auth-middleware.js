@@ -4,9 +4,10 @@ import fs from "fs";
 
 export const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
+    const path = req.file.path;
 
     if (!token) {
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(path);
         return res.status(401).json({ message: "Token no provided" });
     } else {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decode) => {

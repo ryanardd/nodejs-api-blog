@@ -1,7 +1,12 @@
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../error/response-error.js";
-import { createBlogValidation, getIdBlogValidation } from "../validation/blog-validation.js";
+import {
+    createBlogValidation,
+    getIdBlogValidation,
+    updateBlogValidation,
+} from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
+import fs from "fs";
 
 const getBlog = async () => {
     return prismaClient.user.findMany({
@@ -78,7 +83,61 @@ const createBlog = async (user, request) => {
     });
 };
 
-const updateBlog = async (request) => {};
+const updateBlog = async (user, id, request) => {
+    user = await prismaClient.user.findUnique({
+        where: {
+            id_user: user.id_user,
+        },
+    });
+
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
+
+    id = validate(getIdBlogValidation, id);
+
+    const idBlog = await prismaClient.post.findFirst({
+        where: {
+            id_post: id,
+        },
+    });
+
+    if (!idBlog) {
+        throw new ResponseError(404, "id is not found");
+    }
+
+    request = validate(updateBlogValidation, request);
+
+    const update = {};
+
+    if (request.title) {
+        update.title = request.title;
+    }
+
+    if (request.content) {
+        update.content = request.content;
+    }
+
+    if (request.image) {
+        update.image = request.image;
+    }
+
+    if (idBlog.img !== update.image) {
+        fs.unlinkSync(idBlog.img);
+    }
+
+    return prismaClient.post.update({
+        where: {
+            id_post: id,
+        },
+        data: {
+            title: update.title,
+            content: update.content,
+            img: update.image,
+            updated_at: new Date(),
+        },
+    });
+};
 
 const deleteBlog = async (request) => {};
 

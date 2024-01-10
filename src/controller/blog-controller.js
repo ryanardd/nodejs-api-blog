@@ -53,8 +53,23 @@ const createBlog = async (req, res, next) => {
 
 const updateBlog = async (req, res, next) => {
     try {
+        // di ambil dari auth-middleware
+        const user = req.user;
+
+        const idBlog = req.params.id;
+        const request = req.body;
+
+        const result = await blogService.updateBlog(user, idBlog, request);
+        res.status(200).json({
+            data: result,
+        });
+
+        console.info(result);
     } catch (error) {
         next(error);
+        if (req.file) {
+            fs.unlinkSync(req.file.path);
+        }
     }
 };
 
