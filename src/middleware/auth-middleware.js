@@ -4,9 +4,12 @@ import fs from "fs";
 
 export const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
-    const path = req.file.path;
+    const path = req.file?.path;
 
     if (!token) {
+        if (!path) {
+            throw new ResponseError(401, "invalid token");
+        }
         fs.unlinkSync(path);
         return res.status(401).json({ message: "Token no provided" });
     } else {

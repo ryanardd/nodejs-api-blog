@@ -139,7 +139,27 @@ const updateBlog = async (user, id, request) => {
     });
 };
 
-const deleteBlog = async (request) => {};
+const deleteBlog = async (id) => {
+    id = validate(getIdBlogValidation, id);
+
+    const data = await prismaClient.post.findFirst({
+        where: {
+            id_post: id,
+        },
+    });
+
+    if (!data) {
+        throw new ResponseError(404, "data is not found");
+    }
+
+    fs.unlinkSync(data.img);
+
+    return prismaClient.post.delete({
+        where: {
+            id_post: id,
+        },
+    });
+};
 
 export default {
     getBlog,
