@@ -1,5 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { Login } from "./pages/Login"
+import { Sidebar } from "./components/Sidebar"
 
 
 function App() {
@@ -7,7 +8,8 @@ function App() {
     const Layout = () => {
         return (
             // <Login />
-            <div> this is layout</div>
+            // <div> this is layout</div>
+            <Sidebar></Sidebar>
         )
     }
 
