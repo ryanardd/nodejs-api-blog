@@ -26,10 +26,12 @@ export const Sidebar = () => {
                 <div className="flex gap-4 flex-col mt-4">
                     {
                         menus.map((menu, i) => (
-                            <Link to={menu.link} key={i} className={`flex items-center gap-3.5 p-2 font-medium rounded-md ${open ? 'bg-blue-300 shadow-md ' : 'bg-none '} hover:bg-blue-400 `}>
-                                {/* <div className={`${open ? '' : 'p-2 rounded-md hover:bg-blue-400'}`}>{React.createElement(menu.icon, { size: "20" })}</div> */}
-                                <div >{React.createElement(menu.icon, { size: "20" })}</div>
-                                <h1 className={`${!open && 'overflow-hidden'}`}>{menu.name}</h1>
+                            <Link to={menu.link} key={i} className={`flex items-center gap-3.5  font-medium rounded-md ${open ? 'bg-blue-300 shadow-md p-3' : 'bg-none '} hover:bg-blue-400 `}>
+
+                                <div className={`${open ? '' : ' rounded-md p-3 hover:bg-blue-400'}`}>{React.createElement(menu.icon, { size: "24" })}</div>
+
+                                {/* <div >{React.createElement(menu.icon, { size: "20" })}</div> */}
+                                <h1 className={`${!open && 'translate-x-7 opacity-0 overflow-hidden duration-500'}`}>{menu.name}</h1>
                             </Link>
                         ))
                     }
