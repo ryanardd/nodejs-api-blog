@@ -40,7 +40,7 @@ export const Sidebar = ({ children }) => {
                     }
                 </div>
             </div>
-            <div className="w-[75%] mt-[3%]">
+            <div className="w-[100%] mr-[1%] mt-[3%]">
                 {children}
             </div>
         </section>
