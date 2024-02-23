@@ -9,8 +9,8 @@ export const Sidebar = ({ children }) => {
 
     const menus = [
         { name: "Dashboard", path: '/', icon: MdOutlineSpaceDashboard },
-        { name: "Blog", path: '/blogs', icon: MdOutlineProductionQuantityLimits },
-        { name: "User", path: '/user', icon: MdOutlineWifiProtectedSetup },
+        { name: "New Blog", path: '/blog', icon: MdOutlineProductionQuantityLimits },
+        { name: "My Blogs", path: '/blogs', icon: MdOutlineWifiProtectedSetup },
         { name: "Logout", path: '/logout', icon: ImDrawer2, margin: "true" },
     ]
 

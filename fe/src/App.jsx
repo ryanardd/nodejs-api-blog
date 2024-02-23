@@ -3,7 +3,7 @@ import { Login } from "./pages/Login"
 import { Sidebar } from "./components/Sidebar"
 import { Dashboard } from "./pages/dashboard/Dashboard"
 import { Blog } from "./pages/dashboard/Blog"
-import { User } from "./pages/dashboard/User"
+import { MyBlogs } from "./pages/dashboard/MyBlogs"
 import React from "react"
 
 const App = () => {
@@ -16,8 +16,8 @@ const App = () => {
             <Sidebar>
                 <Routes>
                     <Route path="/" element={<Dashboard />}></Route>
-                    <Route path="/blogs" element={<Blog />}></Route>
-                    <Route path="/user" element={<User />}></Route>
+                    <Route path="/blog" element={<Blog />}></Route>
+                    <Route path="/blogs" element={<MyBlogs />}></Route>
                 </Routes>
             </Sidebar>
         </BrowserRouter>
