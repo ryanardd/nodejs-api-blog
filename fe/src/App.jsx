@@ -1,28 +1,50 @@
-import { BrowserRouter, Routes, Route, RouterProvider, createBrowserRouter } from "react-router-dom"
+import { RouterProvider, createBrowserRouter, Route, Routes } from "react-router-dom"
 import { Login } from "./pages/Login"
 import { Sidebar } from "./components/Sidebar"
 import { Dashboard } from "./pages/dashboard/Dashboard"
 import { Blog } from "./pages/dashboard/Blog"
 import { MyBlogs } from "./pages/dashboard/MyBlogs"
 import React from "react"
+import { Register } from "./pages/Register"
 
 const App = () => {
-    return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/login" element={<Login />}></Route>
-            </Routes>
 
-            <Sidebar>
+    const router = createBrowserRouter([
+
+        {
+            path: '/',
+            element: <Sidebar children={
                 <Routes>
-                    <Route path="/" element={<Dashboard />}></Route>
-                    <Route path="/blog" element={<Blog />}></Route>
-                    <Route path="/blogs" element={<MyBlogs />}></Route>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="blog" element={<Blog />} />
+                    <Route path="blogs" element={<MyBlogs />} />
                 </Routes>
-            </Sidebar>
-        </BrowserRouter>
+            } />,
+            children: [
+                {
+                    path: '/',
+                },
+                {
+                    path: '/blog',
+                },
+                {
+                    path: '/blogs',
+                }
+            ]
+        },
+        {
+            path: '/login',
+            element: <Login></Login>
+        },
+        {
+            path: '/register',
+            element: <Register></Register>
+        }
+    ])
 
-    )
+
+    return <RouterProvider router={router}></RouterProvider>
+
 }
 
 export default App
