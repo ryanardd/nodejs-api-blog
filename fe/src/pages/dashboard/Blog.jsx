@@ -21,7 +21,7 @@ export const Blog = () => {
             <div className=" p-2">
                 <h1 className="text-4xl font-bold">Blog</h1>
                 <Form>
-                    <form onSubmit="" className="border space-y-8 w-full p-3 my-6 rounded-md">
+                    <form onSubmit={""} className="border space-y-8 w-full p-3 my-6 rounded-md">
                         <FormItem className="gap-3 grid">
                             <div className="gap-2 grid">
                                 <Label>Title</Label>
