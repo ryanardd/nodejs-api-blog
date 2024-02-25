@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 const get = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id_user;
 
         const result = await userService.get(id);
         res.status(200).json({

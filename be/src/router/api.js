@@ -13,7 +13,7 @@ route.post("/user/login/", userController.login);
 
 // users
 route.use(authMiddleware);
-route.get("/user/:id", userController.get);
+route.get("/user/current", userController.get);
 route.patch("/user/updated/:id", userController.update);
 route.delete("/user/logout", userController.logout);
 
