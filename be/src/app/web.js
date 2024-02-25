@@ -10,7 +10,9 @@ import cors from "cors";
 
 dotenv.config();
 export const app = express();
+app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/images/", express.static("public/image"));
 app.use(cookieParser());
 app.use(
     cors({
@@ -20,8 +22,6 @@ app.use(
         credentials: true,
     })
 );
-app.use(express.json());
-
 app.use(
     multer({
         storage: filterStorage,
