@@ -32,8 +32,8 @@ export const Sidebar = ({ children }) => {
                         menus.map((menu, i) => (
                             <Link to={menu.path} key={i}
                                 onClick={() => handleTabClick(i)}
-                                className={`${menu?.margin && 'mt-[100%]'} ${click === i ? "bg-blue-400" : ""} flex items-center gap-3.5  font-medium rounded-md ${open ? 'bg-blue-100 shadow-md p-3' : 'bg-none '} hover:bg-blue-400 `}>
-                                <div className={` ${open ? '' : ' rounded-md p-3 hover:bg-blue-400'} ${click === i ? "bg-blue-400" : ""}`}>{React.createElement(menu.icon, { size: "24" })}</div>
+                                className={`${menu?.margin && 'translate-y-full mt-[100%] '} ${click === i ? "bg-blue-400" : ""} flex items-center gap-3.5  font-medium rounded-md ${open ? 'bg-blue-100 shadow-md p-3' : 'bg-none '} hover:bg-blue-400 `}>
+                                <div className={` ${open ? '' : 'rounded-md p-3 hover:bg-blue-400'} ${click === i ? "bg-blue-400" : ""}`}>{React.createElement(menu.icon, { size: "24" })}</div>
                                 <h1 className={`${!open && 'translate-x-7 opacity-0 overflow-hidden duration-500'}`}>{menu.name}</h1>
                             </Link>
                         ))

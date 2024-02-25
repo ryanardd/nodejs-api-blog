@@ -10,8 +10,11 @@ import axios from "axios"
 export const Login = () => {
 
     const [values, setValues] = useState({
-        username: ''
+        username: '',
+        password: '',
     });
+
+    const [alert, setAlert] = useState()
 
     const navigate = useNavigate('/');
 
@@ -21,14 +24,19 @@ export const Login = () => {
         e.preventDefault();
 
         const data = {
-            username: e.target.username.value
+            username: e.target.username.value,
+            password: e.target.password.value
         }
         try {
             await axios.post('http://localhost:3000/user/login/', data).then((res) => {
-                console.log(res.data)
+                const response = res.data;
+
+                if (response) {
+                    navigate('/')
+                }
             })
         } catch (error) {
-            console.log(error.response)
+            setAlert(error.response.data.errors)
         }
     }
 
@@ -44,6 +52,11 @@ export const Login = () => {
                                 Welcome Back!
                                 <p className="text-xs text-gray-400">Please enter your details.</p>
                             </h1>
+                            <div className="text-center">
+                                <p
+                                    className={`text-xs text-red-500 ${alert ? 'opacity-1 duration-700' : 'opacity-0 '}`}
+                                >{alert}</p>
+                            </div>
                             <FormItem className="gap-3 grid">
                                 <div className="gap-2 grid">
                                     <Label>Username</Label>
@@ -59,6 +72,9 @@ export const Login = () => {
                                 <div className="gap-2 grid">
                                     <Label>Password</Label>
                                     <Input
+                                        onChange={e => setValues({
+                                            ...values, password: e.target.password
+                                        })}
                                         type="password"
                                         name="password"
                                         placeholder="Type your password here"
