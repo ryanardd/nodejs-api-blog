@@ -25,14 +25,26 @@ model User {
 
 // MANY
 model Post {
-    id_post    Int      @id @default(autoincrement())
-    title      String   @db.VarChar(100)
-    content    String   @db.Text
-    img        String   @db.VarChar(255)
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
-    author_id  Int
-    user       User     @relation(fields: [author_id], references: [id_user])
+    id_post     Int      @id @default(autoincrement())
+    title       String   @db.VarChar(100)
+    content     String   @db.Text
+    img         String   @db.VarChar(255)
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
+    author_id   Int
+    user        User     @relation(fields: [author_id], references: [id_user])
+    category    Category @relation(fields: [category_id], references: [id_category])
+    category_id Int
 
     @@map("posts")
+}
+
+// ONE
+model Category {
+    id_category Int    @id @default(autoincrement())
+    name        String @db.VarChar(100)
+
+    post Post[]
+
+    @@map("categories")
 }
