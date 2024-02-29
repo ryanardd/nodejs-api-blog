@@ -1,44 +1,44 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 model User {
-  id_user  Int    @id @default(autoincrement())
-  name     String @db.VarChar(100)
-  username String @unique @db.VarChar(100)
-  email    String @db.VarChar(100)
-  password String @db.VarChar(100)
-  post     Post[]
+    id_user  Int    @id @default(autoincrement())
+    name     String @db.VarChar(100)
+    username String @unique @db.VarChar(100)
+    email    String @db.VarChar(100)
+    password String @db.VarChar(100)
+    post     Post[]
 
-  @@map("users")
+    @@map("users")
 }
 
 model Post {
-  id_post     Int      @id @default(autoincrement())
-  title       String   @db.VarChar(100)
-  content     String   @db.Text
-  img         String   @db.VarChar(255)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  author_id   Int
-  category_id Int
-  user        User     @relation(fields: [author_id], references: [id_user])
-  category    Category @relation(fields: [category_id], references: [id_category])
+    id_post     Int      @id @default(autoincrement())
+    title       String   @db.VarChar(100)
+    content     String   @db.Text
+    img         String   @db.VarChar(255)
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
+    author_id   Int
+    category_id Int
+    user        User     @relation(fields: [author_id], references: [id_user])
+    category    Category @relation(fields: [category_id], references: [id_category])
 
-  @@index([author_id], map: "posts_author_id_fkey")
-  @@index([category_id], map: "posts_category_id_fkey")
-  @@map("posts")
+    @@index([author_id], map: "posts_author_id_fkey")
+    @@index([category_id], map: "posts_category_id_fkey")
+    @@map("posts")
 }
 
 model Category {
-  id_category Int    @id @default(autoincrement())
-  name        String @db.VarChar(100)
-  post        Post[]
+    id_category Int    @id @default(autoincrement())
+    name        String @db.VarChar(100)
+    post        Post[]
 
-  @@map("categories")
+    @@map("categories")
 }
