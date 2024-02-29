@@ -3,23 +3,24 @@ import { ResponseError } from "../error/response-error.js";
 import {
     addCategoryValidation,
     getCategoryIdValidation,
+    updateCategoryValidation,
 } from "../validation/category-validation.js";
 import { validate } from "../validation/validation.js";
 
 const get = async () => {
-    return prismaClient.category.findMany({
-        select: {
-            name: true,
-            post: true,
-        },
-    });
+    const data = await prismaClient.category.findMany({});
+
+    if (!data) {
+        throw new ResponseError(209, "no content");
+    }
+
+    return data;
 };
 
 const getId = async (id) => {
     id = validate(getCategoryIdValidation, id);
-    console.log(id);
 
-    const data = await prismaClient.category.findFirst({
+    const data = await prismaClient.category.findUnique({
         where: {
             id_category: id,
         },
@@ -49,8 +50,55 @@ const add = async (request) => {
         data: request,
     });
 };
-const update = async (request) => {};
-const remove = async (request) => {};
+
+const update = async (id, request) => {
+    id = validate(getCategoryIdValidation, id);
+
+    const dataId = await prismaClient.category.count({
+        where: {
+            id_category: id,
+        },
+    });
+
+    if (dataId !== 1) {
+        throw new ResponseError(404, "id is not found");
+    }
+
+    request = validate(updateCategoryValidation, request);
+
+    const updated = {};
+
+    if (request.name) {
+        updated.name = request.name;
+    }
+
+    return prismaClient.category.update({
+        where: {
+            id_category: id,
+        },
+        data: updated,
+    });
+};
+
+const remove = async (id) => {
+    id = validate(getCategoryIdValidation, id);
+
+    const dataId = await prismaClient.category.count({
+        where: {
+            id_category: id,
+        },
+    });
+
+    if (dataId !== 1) {
+        throw new ResponseError(404, "id is not found");
+    }
+
+    return prismaClient.category.delete({
+        where: {
+            id_category: id,
+        },
+    });
+};
 
 export default {
     get,

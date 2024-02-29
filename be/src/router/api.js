@@ -22,7 +22,7 @@ route.delete("/user/logout", userController.logout);
 route.get("/category", categoryController.get);
 route.get("/category/:id", categoryController.getId);
 route.post("/category/add", categoryController.add);
-route.patch("/category/:id", categoryController.update);
+route.patch("/category/updated/:id", categoryController.update);
 route.delete("/category/:id", categoryController.remove);
 
 // blogs

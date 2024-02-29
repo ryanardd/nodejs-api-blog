@@ -3,7 +3,7 @@ import categoryService from "../service/category-service.js";
 const get = async (req, res, next) => {
     try {
         const result = await categoryService.get();
-        console.log(result);
+
         res.status(200).json({
             data: result,
         });
@@ -11,6 +11,7 @@ const get = async (req, res, next) => {
         next(error);
     }
 };
+
 const getId = async (req, res, next) => {
     try {
         const id = req.params.id;
@@ -23,6 +24,7 @@ const getId = async (req, res, next) => {
         next(error);
     }
 };
+
 const add = async (req, res, next) => {
     try {
         const result = await categoryService.add(req.body);
@@ -33,14 +35,31 @@ const add = async (req, res, next) => {
         next(error);
     }
 };
+
 const update = async (req, res, next) => {
     try {
+        const id = req.params.id;
+        const request = req.body;
+
+        const result = await categoryService.update(id, request);
+
+        res.status(200).json({
+            result,
+        });
     } catch (error) {
         next(error);
     }
 };
+
 const remove = async (req, res, next) => {
     try {
+        const id = req.params.id;
+
+        const result = await categoryService.remove(id);
+
+        res.status(200).json({
+            message: "Deleted successfully",
+        });
     } catch (error) {
         next(error);
     }
