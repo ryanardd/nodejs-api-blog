@@ -18,7 +18,7 @@ const getId = async (req, res, next) => {
 
         const result = await categoryService.getId(id);
         res.status(200).json({
-            result,
+            data: result,
         });
     } catch (error) {
         next(error);
@@ -29,7 +29,7 @@ const add = async (req, res, next) => {
     try {
         const result = await categoryService.add(req.body);
         res.status(200).json({
-            result,
+            data: result,
         });
     } catch (error) {
         next(error);
@@ -44,7 +44,7 @@ const update = async (req, res, next) => {
         const result = await categoryService.update(id, request);
 
         res.status(200).json({
-            result,
+            data: result,
         });
     } catch (error) {
         next(error);

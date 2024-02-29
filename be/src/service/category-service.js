@@ -30,6 +30,11 @@ const getId = async (id) => {
         where: {
             id_category: id,
         },
+        select: {
+            id_category: true,
+            name: true,
+            post: true,
+        },
     });
 
     if (!data) {
