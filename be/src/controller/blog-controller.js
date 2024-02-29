@@ -36,9 +36,10 @@ const createBlog = async (req, res, next) => {
         const user = req.user;
         const title = req.body.title;
         const content = req.body.content;
+        const category = req.body.category;
         const image = req.file.path;
 
-        const result = await blogService.createBlog(user, { title, content, image });
+        const result = await blogService.createBlog(user, { title, content, category, image }, req);
         res.status(200).json({
             data: result,
         });
@@ -59,9 +60,9 @@ const updateBlog = async (req, res, next) => {
         const idBlog = req.params.id;
         const title = req.body.title;
         const content = req.body.content;
-        const image = req.file.path;
+        const image = req.file?.path;
 
-        const result = await blogService.updateBlog(user, idBlog, { title, content, image });
+        const result = await blogService.updateBlog(user, idBlog, { title, content, image }, req);
         res.status(200).json({
             data: result,
         });

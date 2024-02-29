@@ -38,6 +38,7 @@ const getBlogId = async (params) => {
                     email: true,
                 },
             },
+            category: true,
         },
     });
 
@@ -48,7 +49,7 @@ const getBlogId = async (params) => {
     return data;
 };
 
-const createBlog = async (user, request) => {
+const createBlog = async (user, request, req) => {
     user = await prismaClient.user.findUnique({
         where: {
             id_user: user.id_user,
@@ -70,7 +71,8 @@ const createBlog = async (user, request) => {
             author_id: user.id_user,
             title: data.title,
             content: data.content,
-            img: data.image,
+            category_id: data.category,
+            img: data ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
         },
         select: {
             id_post: true,
@@ -78,12 +80,19 @@ const createBlog = async (user, request) => {
             content: true,
             img: true,
             author_id: true,
-            user: true,
+            user: {
+                select: {
+                    id_user: true,
+                    username: true,
+                    email: true,
+                },
+            },
+            category: true,
         },
     });
 };
 
-const updateBlog = async (user, id, request) => {
+const updateBlog = async (user, id, request, req) => {
     user = await prismaClient.user.findUnique({
         where: {
             id_user: user.id_user,
@@ -118,12 +127,17 @@ const updateBlog = async (user, id, request) => {
         update.content = request.content;
     }
 
-    if (request.image) {
-        update.image = request.image;
+    if (request.category) {
+        update.category = request.category;
     }
 
-    if (idBlog.img !== update.image) {
-        fs.unlinkSync(idBlog.img);
+    if (request.image) {
+        update.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+        if (idBlog.img !== update.image) {
+            fs.unlinkSync(idBlog.img);
+        }
+    } else {
+        update.image = idBlog.img;
     }
 
     return prismaClient.post.update({
@@ -135,6 +149,21 @@ const updateBlog = async (user, id, request) => {
             content: update.content,
             img: update.image,
             updated_at: new Date(),
+        },
+        select: {
+            id_post: true,
+            title: true,
+            content: true,
+            img: true,
+            author_id: true,
+            user: {
+                select: {
+                    id_user: true,
+                    username: true,
+                    email: true,
+                },
+            },
+            category: true,
         },
     });
 };
