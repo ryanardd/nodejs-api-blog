@@ -72,10 +72,6 @@ const login = async (request) => {
         throw new ResponseError(401, "Username or password wrong");
     }
 
-    console.info(users);
-
-    // return users;
-
     return prismaClient.user.findUnique({
         where: {
             username: users.username,

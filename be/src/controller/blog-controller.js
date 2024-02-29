@@ -66,8 +66,6 @@ const updateBlog = async (req, res, next) => {
         res.status(200).json({
             data: result,
         });
-
-        console.info(result);
     } catch (error) {
         next(error);
         if (req.file) {

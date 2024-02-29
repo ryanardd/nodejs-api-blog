@@ -52,7 +52,6 @@ const update = async (req, res, next) => {
 
         const result = await userService.update(id, request);
 
-        console.info(result);
         res.status(200).json({
             data: result,
             message: "Updated Successfuly",

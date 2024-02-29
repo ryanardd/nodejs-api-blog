@@ -8,7 +8,13 @@ import {
 import { validate } from "../validation/validation.js";
 
 const get = async () => {
-    const data = await prismaClient.category.findMany({});
+    const data = await prismaClient.category.findMany({
+        select: {
+            id_category: true,
+            name: true,
+            post: true,
+        },
+    });
 
     if (!data) {
         throw new ResponseError(209, "no content");
