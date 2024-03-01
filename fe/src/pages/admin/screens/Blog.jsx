@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { Form, FormItem } from "@/components/ui/form"
+import { Form, FormControl, FormItem } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import axios from "axios"
+import { addBlog } from "@/services/blog-service"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export const Blog = () => {
 
@@ -19,6 +21,7 @@ export const Blog = () => {
         setImage(image);
         setPreview(URL.createObjectURL(image));
     }
+
     const handlerPost = async (e) => {
         e.preventDefault()
 
@@ -26,22 +29,18 @@ export const Blog = () => {
         formData.append("title", title)
         formData.append("content", content)
         formData.append("category", category)
-        formData.append("img", image)
-        console.log(formData.append("title", title))
+        formData.append("image", image)
+
         // memanggil api
         try {
-            await axios.post('http://localhost:3000/blog', formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            }).then((res) => {
-                const response = res.data;
+            await addBlog(formData, ((res) => {
+                console.log(res.message)
+            }));
 
-                console.log(response)
-            })
         } catch (error) {
-            console.log(error.response)
+            console.log(error.response.data.errors)
         }
     }
-
 
     return (
         <section className="poppins">
@@ -53,6 +52,7 @@ export const Blog = () => {
                             <div className="gap-2 grid">
                                 <Label>Title</Label>
                                 <Input
+                                    value={title}
                                     onChange={e => setTitle(e.target.value)}
                                     type="text"
                                     placeholder="Type your title here"></Input>
@@ -60,16 +60,23 @@ export const Blog = () => {
                             <div className="gap-2 grid">
                                 <Label>Content</Label>
                                 <Textarea
+                                    value={content}
                                     onChange={e => setContent(e.target.value)}
                                     type="text"
                                     placeholder="Type your content here"></Textarea>
                             </div>
                             <div className="gap-2 grid">
                                 <Label>Category</Label>
-                                <Input
-                                    onChange={e => setCategory(e.target.value)}
-                                    type="text"
-                                    placeholder="Type your content here"></Input>
+                                <Select>
+                                    {/* <Select onValueChange={field.onChange} defaultValue={field.value}> */}
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a category" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="m@example.com">m@example.com</SelectItem>
+                                        <SelectItem value="m@google.com">m@google.com</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                             <div className="gap-2 grid w-full">
                                 <Label>Image</Label>
