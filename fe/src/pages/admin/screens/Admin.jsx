@@ -1,4 +1,4 @@
-const Dashboard = () => {
+const Admin = () => {
     return (
         <section className="poppins h-[100%]">
             <div className="p-2">
@@ -32,4 +32,4 @@ const Dashboard = () => {
     )
 }
 
-export { Dashboard }
+export { Admin }

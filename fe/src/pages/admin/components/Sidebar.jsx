@@ -8,9 +8,9 @@ import React, { useState } from "react";
 export const Sidebar = ({ children }) => {
 
     const menus = [
-        { name: "Dashboard", path: '/', icon: MdOutlineSpaceDashboard },
-        { name: "New Blog", path: '/blog', icon: MdOutlineProductionQuantityLimits },
-        { name: "My Blogs", path: '/blogs', icon: MdOutlineWifiProtectedSetup },
+        { name: "Dashboard", path: '/admin  ', icon: MdOutlineSpaceDashboard },
+        { name: "New Blog", path: 'blogs', icon: MdOutlineProductionQuantityLimits },
+        { name: "My Blogs", path: 'my-blogs', icon: MdOutlineWifiProtectedSetup },
         { name: "Logout", path: '/logout', icon: ImDrawer2, margin: "true" },
     ]
 
@@ -22,7 +22,7 @@ export const Sidebar = ({ children }) => {
     };
 
     return (
-        <section className="flex gap-6">
+        <section className="">
             <div className={`bg-slate-100 min-h-screen px-2 ${open ? 'w-72' : 'w-16 '} duration-700`}>
                 <div className={`flex justify-end py-3 ${open ? '' : ' -translate-x-2 '}`}>
                     <HiMenuAlt3 size={25} className="cursor-pointer" onClick={() => setOpen(!open)}></HiMenuAlt3>
@@ -40,9 +40,9 @@ export const Sidebar = ({ children }) => {
                     }
                 </div>
             </div>
-            <div className="w-[100%] mr-[1%] my-[3%]">
+            {/* <div className="w-[100%] mr-[1%] my-[3%]">
                 {children}
-            </div>
+            </div> */}
         </section>
     )
 }

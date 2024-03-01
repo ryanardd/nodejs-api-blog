@@ -1,39 +1,34 @@
-import { RouterProvider, createBrowserRouter, Route, Routes } from "react-router-dom"
+import { RouterProvider, createBrowserRouter, Route, Routes, BrowserRouter } from "react-router-dom"
 import { Login } from "./pages/Login"
-import { Sidebar } from "./components/Sidebar"
-import { Dashboard } from "./pages/dashboard/Dashboard"
-import { Blog } from "./pages/dashboard/Blog"
-import { MyBlogs } from "./pages/dashboard/MyBlogs"
+import { Blog } from "./pages/admin/screens/Blog"
+import { MyBlogs } from "./pages/admin/screens/MyBlogs"
 import React from "react"
 import { Register } from "./pages/Register"
+import { AdminLayout } from "./pages/admin/AdminLayout"
+import { Admin } from "./pages/admin/screens/Admin"
 
 const App = () => {
-
     const router = createBrowserRouter([
-
         {
-            path: '/',
-            element: <Sidebar children={
-                <Routes>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="blog" element={<Blog />} />
-                    <Route path="blogs" element={<MyBlogs />} />
-                </Routes>
-            } />,
+            path: '/admin',
+            element: <AdminLayout />,
             children: [
                 {
-                    path: '/',
+                    index: true,
+                    element: <Admin />
                 },
                 {
-                    path: '/blog',
+                    path: 'blogs',
+                    element: <Blog />
                 },
                 {
-                    path: '/blogs',
+                    path: 'my-blogs',
+                    element: <MyBlogs />
                 }
             ]
         },
         {
-            path: '/login',
+            path: '/',
             element: <Login></Login>
         },
         {

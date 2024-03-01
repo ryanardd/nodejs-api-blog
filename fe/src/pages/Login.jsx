@@ -32,7 +32,7 @@ export const Login = () => {
                 const response = res.data;
 
                 if (response) {
-                    navigate('/')
+                    navigate('/admin')
                 }
             })
         } catch (error) {

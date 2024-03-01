@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import { Form, FormItem } from "@/components/ui/form"
-import rect from "../../assets/ab1927.png"
 import { Label } from "@/components/ui/label"
 import { MdDeleteOutline, MdOutlineEdit } from "react-icons/md";
 import { useEffect, useState } from "react";
@@ -35,13 +34,13 @@ export const MyBlogs = () => {
             <div className="p-2">
                 <h1 className="text-4xl font-bold">My Blog</h1>
                 <Form>
-                    <form onSubmit="" className="flex flex-wrap gap-5 py-3 my-3">
+                    <form className="flex flex-wrap gap-5 py-3 my-3">
                         {
                             datas.map((data, i) => (
                                 <FormItem className="basis-56" key={i}>
                                     <div className="border rounded-md p-2">
                                         <div>
-                                            <img src={`http://localhost:3000/images/${data.img}`} alt="image" className="border h-full w-full object-cover" />
+                                            <img src={data.img} alt="image" className="border h-full w-full object-cover" />
                                         </div>
                                         <div className="my-2">
                                             <Label>{data.title}</Label>
