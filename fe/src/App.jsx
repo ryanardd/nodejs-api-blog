@@ -6,6 +6,8 @@ import React from "react"
 import { Register } from "./pages/Register"
 import { AdminLayout } from "./pages/admin/AdminLayout"
 import { Admin } from "./pages/admin/screens/Admin"
+import { EditBlog } from "./pages/admin/screens/EditBlog"
+import { Delete } from "./pages/admin/screens/Delete"
 
 const App = () => {
     const router = createBrowserRouter([
@@ -23,9 +25,22 @@ const App = () => {
                 },
                 {
                     path: 'my-blogs',
-                    element: <MyBlogs />
-                }
+                    element: <MyBlogs />,
+                    // children: [
+                    //     {
+                    //         path: 'edit',
+                    //         element: <EditBlog />
+                    //     },
+                    //     {
+                    //         path: 'delete',
+                    //         element: <Delete />
+                    //     }]
+                },
             ]
+        },
+        {
+            path: '/edit',
+            element: <EditBlog />
         },
         {
             path: '/',
