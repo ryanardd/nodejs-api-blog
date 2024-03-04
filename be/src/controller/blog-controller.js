@@ -30,7 +30,7 @@ const getBlogId = async (req, res, next) => {
 const createBlog = async (req, res, next) => {
     try {
         if (!req.file) {
-            throw new ResponseError(Error.name, "please, input field image");
+            throw new ResponseError(400, "please, input field image");
         }
 
         const user = req.user;
@@ -42,6 +42,7 @@ const createBlog = async (req, res, next) => {
         const result = await blogService.createBlog(user, { title, content, category, image }, req);
         res.status(200).json({
             data: result,
+            message: "created blog successfully",
         });
     } catch (error) {
         next(error);
