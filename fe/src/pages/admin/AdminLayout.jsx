@@ -3,6 +3,7 @@ import { Sidebar } from './components/Sidebar'
 import { Outlet } from "react-router-dom"
 import { Admin } from './screens/Admin'
 import { Blog } from './screens/Blog'
+import { EditBlog } from './screens/EditBlog'
 
 export const AdminLayout = () => {
     return (
@@ -10,8 +11,6 @@ export const AdminLayout = () => {
             <Sidebar></Sidebar>
             <main className='w-[100%] mr-[1%] my-[3%]'>
                 <Outlet />
-                {/* <Admin></Admin>
-                <Blog></Blog> */}
             </main>
         </div>
     )

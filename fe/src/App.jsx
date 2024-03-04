@@ -22,25 +22,20 @@ const App = () => {
                 {
                     path: 'blogs',
                     element: <Blog />
+                }, {
+                    path: 'edit/:id',
+                    element: <EditBlog />
                 },
                 {
                     path: 'my-blogs',
                     element: <MyBlogs />,
-                    // children: [
-                    //     {
-                    //         path: 'edit',
-                    //         element: <EditBlog />
-                    //     },
-                    //     {
-                    //         path: 'delete',
-                    //         element: <Delete />
-                    //     }]
+                    children: [
+                        {
+                            path: 'delete',
+                            element: <Delete />
+                        }]
                 },
             ]
-        },
-        {
-            path: '/edit',
-            element: <EditBlog />
         },
         {
             path: '/',

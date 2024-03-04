@@ -6,17 +6,12 @@ import axios from "axios";
 import { Link, Outlet } from "react-router-dom";
 import { EditBlog } from "./EditBlog";
 import { Delete } from "./Delete";
+import { MdDeleteOutline, MdOutlineEdit } from 'react-icons/md'
 
 
 export const MyBlogs = () => {
 
-    const menus = [
-        { name: "Edit", element: <EditBlog /> },
-        { name: "Delete", element: <Delete /> },
-    ]
-
     const [datas, setDatas] = useState([]);
-    const [posts, setPosts] = useState('');
 
     const handleButton = async (e) => {
         e.preventDefault()
@@ -27,8 +22,8 @@ export const MyBlogs = () => {
         axios.get(`http://localhost:3000/user/current`).then((res) => {
 
             if (res.data) {
-                console.log(res.data.data.post)
-                setDatas(res.data.data.post)
+                const data = res.data.data.post
+                setDatas(data)
             }
         }).catch(e => {
             console.log(e.response)
@@ -53,17 +48,21 @@ export const MyBlogs = () => {
                                         </div>
                                         <p className="border-b-2 my-3 border-b-gray-300 rounded-sm">{data.content}</p>
                                         <div className="flex gap-2 justify-between">
-                                            {
-                                                menus.map((menu, i) => (
-                                                    <Link
-                                                        to={menu.path}
-                                                        key={i} >
-                                                        <div className="flex">
-                                                            {menu.element}
-                                                        </div>
-                                                    </Link>
-                                                ))
-                                            }
+
+                                            <Link
+                                                to={`/admin/edit/${data.id_post}`}
+                                                key={i} >
+                                                <div className="flex">
+                                                    <Button><MdOutlineEdit />Edit</Button>
+                                                </div>
+                                            </Link>
+                                            <Link
+                                                to={'delete'}>
+                                                <div className="flex">
+                                                    <Delete></Delete>
+                                                </div>
+                                            </Link>
+
                                         </div>
                                     </div>
                                 </FormItem>

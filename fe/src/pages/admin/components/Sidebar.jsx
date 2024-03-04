@@ -27,7 +27,7 @@ export const Sidebar = ({ children }) => {
                 <div className={`flex justify-end py-3 ${open ? '' : ' -translate-x-2 '}`}>
                     <HiMenuAlt3 size={25} className="cursor-pointer" onClick={() => setOpen(!open)}></HiMenuAlt3>
                 </div>
-                <div className="flex gap-6 flex-col mt-4">
+                <div className="flex gap-6 flex-col ">
                     {
                         menus.map((menu, i) => (
                             <Link to={menu.path} key={i}
