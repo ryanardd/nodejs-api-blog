@@ -1,55 +1,19 @@
-import { RouterProvider, createBrowserRouter, Route, Routes, BrowserRouter } from "react-router-dom"
-import { Login } from "./pages/Login"
-import { Blog } from "./pages/admin/screens/Blog"
-import { MyBlogs } from "./pages/admin/screens/MyBlogs"
-import React from "react"
-import { Register } from "./pages/Register"
-import { AdminLayout } from "./pages/admin/AdminLayout"
-import { Admin } from "./pages/admin/screens/Admin"
-import { EditBlog } from "./pages/admin/screens/EditBlog"
-import { Delete } from "./pages/admin/screens/Delete"
+/* eslint-disable perfectionist/sort-imports */
+import 'src/global.css';
 
-const App = () => {
-    const router = createBrowserRouter([
-        {
-            path: '/admin',
-            element: <AdminLayout />,
-            children: [
-                {
-                    index: true,
-                    element: <Admin />
-                },
-                {
-                    path: 'blogs',
-                    element: <Blog />
-                }, {
-                    path: 'edit/:id',
-                    element: <EditBlog />
-                },
-                {
-                    path: 'my-blogs',
-                    element: <MyBlogs />,
-                    children: [
-                        {
-                            path: 'delete',
-                            element: <Delete />
-                        }]
-                },
-            ]
-        },
-        {
-            path: '/',
-            element: <Login></Login>
-        },
-        {
-            path: '/register',
-            element: <Register></Register>
-        }
-    ])
+import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
+import Router from 'src/routes/sections';
+import ThemeProvider from 'src/theme';
 
-    return <RouterProvider router={router}></RouterProvider>
+// ----------------------------------------------------------------------
 
+export default function App() {
+  useScrollToTop();
+
+  return (
+    <ThemeProvider>
+      <Router />
+    </ThemeProvider>
+  );
 }
-
-export default App
