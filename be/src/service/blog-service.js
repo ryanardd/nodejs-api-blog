@@ -1,3 +1,4 @@
+import path from "path";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../response/response-error.js";
 import {
@@ -134,10 +135,13 @@ const updateBlog = async (user, id, request) => {
     if (request.image) {
         update.image = request.image;
         if (idBlog.img !== update.image) {
-            fs.unlinkSync(idBlog.img);
+            fs.unlink(idBlog.img, (err) => {
+                if (err) throw err;
+                console.log("path/file.txt was deleted");
+            });
         }
     } else {
-        update.image = idBlog.img;
+        update.image = request.img;
     }
 
     return prismaClient.post.update({

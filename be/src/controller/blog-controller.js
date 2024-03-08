@@ -1,3 +1,4 @@
+import path from "path";
 import { ResponseError } from "../response/response-error.js";
 import { response } from "../response/response.js";
 import blogService from "../service/blog-service.js";
@@ -34,7 +35,7 @@ const createBlog = async (req, res, next) => {
         const title = req.body.title;
         const content = req.body.content;
         const category = req.body.category;
-        const image = `public/images/${req.file.filename}`;
+        const image = `public/image/${req.file.filename}`;
 
         const result = await blogService.createBlog(user, { title, content, category, image });
         response(200, result, "blog created successfully", res);
@@ -55,9 +56,16 @@ const updateBlog = async (req, res, next) => {
         const idBlog = req.params.id;
         const title = req.body.title;
         const content = req.body.content;
-        const image = req.file?.path;
+        const category = req.body.category;
+        // const image = req.file?.path;
+        const image = `public/image/${req.file?.filename}`;
 
-        const result = await blogService.updateBlog(user, idBlog, { title, content, image }, req);
+        const result = await blogService.updateBlog(user, idBlog, {
+            title,
+            content,
+            category,
+            image,
+        });
         response(200, result, "updated blog successfully", res);
     } catch (error) {
         next(error);
