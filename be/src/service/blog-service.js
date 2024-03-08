@@ -1,5 +1,5 @@
 import { prismaClient } from "../app/database.js";
-import { ResponseError } from "../error/response-error.js";
+import { ResponseError } from "../response/response-error.js";
 import {
     createBlogValidation,
     getIdBlogValidation,
@@ -49,7 +49,7 @@ const getBlogId = async (params) => {
     return data;
 };
 
-const createBlog = async (user, request, req) => {
+const createBlog = async (user, request) => {
     user = await prismaClient.user.findUnique({
         where: {
             id_user: user.id_user,
@@ -72,7 +72,7 @@ const createBlog = async (user, request, req) => {
             title: data.title,
             content: data.content,
             category_id: data.category,
-            img: data ? `${req.protocol}://${req.get("host")}/images/${req.file.filename}` : null,
+            img: data.image,
         },
         select: {
             id_post: true,
@@ -92,7 +92,7 @@ const createBlog = async (user, request, req) => {
     });
 };
 
-const updateBlog = async (user, id, request, req) => {
+const updateBlog = async (user, id, request) => {
     user = await prismaClient.user.findUnique({
         where: {
             id_user: user.id_user,
@@ -132,7 +132,7 @@ const updateBlog = async (user, id, request, req) => {
     }
 
     if (request.image) {
-        update.image = `${req.protocol}://${req.get("host")}/images/${req.file.filename}`;
+        update.image = request.image;
         if (idBlog.img !== update.image) {
             fs.unlinkSync(idBlog.img);
         }

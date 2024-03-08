@@ -1,12 +1,11 @@
+import { response } from "../response/response.js";
 import categoryService from "../service/category-service.js";
 
 const get = async (req, res, next) => {
     try {
         const result = await categoryService.get();
 
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "get data categories", res);
     } catch (error) {
         next(error);
     }
@@ -17,9 +16,7 @@ const getId = async (req, res, next) => {
         const id = req.params.id;
 
         const result = await categoryService.getId(id);
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "get data category by id", res);
     } catch (error) {
         next(error);
     }
@@ -28,9 +25,7 @@ const getId = async (req, res, next) => {
 const add = async (req, res, next) => {
     try {
         const result = await categoryService.add(req.body);
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "category created successfully", res);
     } catch (error) {
         next(error);
     }
@@ -43,9 +38,7 @@ const update = async (req, res, next) => {
 
         const result = await categoryService.update(id, request);
 
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "updated category successfully", res);
     } catch (error) {
         next(error);
     }
@@ -57,9 +50,7 @@ const remove = async (req, res, next) => {
 
         const result = await categoryService.remove(id);
 
-        res.status(200).json({
-            message: "Deleted successfully",
-        });
+        response(200, result, "deleted category successfully", res);
     } catch (error) {
         next(error);
     }

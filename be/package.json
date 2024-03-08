@@ -1,17 +1,11 @@
 {
-  "name": "blog",
+  "name": "api-blog",
   "version": "1.0.0",
   "description": "Create API blog",
   "main": "./src/main.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
     "dev": "nodemon src/main.js"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
-    }
   },
   "author": "Ryan Ardiansyah",
   "license": "ISC",
@@ -29,19 +23,13 @@
     "winston": "^3.10.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.22.20",
     "@types/bcrypt": "^5.0.0",
     "@types/body-parser": "^1.19.3",
     "@types/cookie-parser": "^1.4.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.18",
-    "@types/jest": "^29.5.5",
     "@types/multer": "^1.4.11",
-    "@types/supertest": "^2.0.13",
-    "babel-jest": "^29.7.0",
-    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
-    "prisma": "^5.10.2",
-    "supertest": "^6.3.3"
+    "prisma": "^5.10.2"
   }
 }

@@ -1,4 +1,4 @@
-import { ResponseError } from "../error/response-error.js";
+import { response } from "../response/response.js";
 import userService from "../service/user-service.js";
 import jwt from "jsonwebtoken";
 
@@ -7,9 +7,7 @@ const get = async (req, res, next) => {
         const id = req.user.id_user;
 
         const result = await userService.get(id);
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "get data user", res);
     } catch (error) {
         next(error);
     }
@@ -20,9 +18,7 @@ const register = async (req, res, next) => {
         const request = req.body;
 
         const result = await userService.register(request);
-        res.status(200).json({
-            data: result,
-        });
+        response(200, result, "user register successfully", res);
     } catch (error) {
         next(error);
     }
@@ -39,7 +35,7 @@ const login = async (req, res, next) => {
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
         });
-        res.status(200).send(payload);
+        response(200, payload, "user login successfully", res);
     } catch (error) {
         next(error);
     }
@@ -52,10 +48,7 @@ const update = async (req, res, next) => {
 
         const result = await userService.update(id, request);
 
-        res.status(200).json({
-            data: result,
-            message: "Updated Successfuly",
-        });
+        response(200, result, "updated user successfully", res);
     } catch (error) {
         next(error);
     }

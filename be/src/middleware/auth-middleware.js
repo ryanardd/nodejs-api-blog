@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ResponseError } from "../error/response-error.js";
+import { ResponseError } from "../response/response-error.js";
 import fs from "fs";
 
 export const authMiddleware = (req, res, next) => {
