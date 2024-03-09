@@ -58,7 +58,7 @@ const updateBlog = async (req, res, next) => {
         const content = req.body.content;
         const category = req.body.category;
         // const image = req.file?.path;
-        const image = `public/image/${req.file?.filename}`;
+        const image = req.file?.filename;
 
         const result = await blogService.updateBlog(user, idBlog, {
             title,

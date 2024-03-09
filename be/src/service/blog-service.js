@@ -131,17 +131,15 @@ const updateBlog = async (user, id, request) => {
     if (request.category) {
         update.category = request.category;
     }
+    console.log(idBlog.img);
 
-    if (request.image) {
-        update.image = request.image;
+    if (request.image !== undefined && request.image !== "") {
+        update.image = `public/image/${request.image}`;
         if (idBlog.img !== update.image) {
-            fs.unlink(idBlog.img, (err) => {
-                if (err) throw err;
-                console.log("path/file.txt was deleted");
-            });
+            fs.unlinkSync(idBlog.img);
         }
     } else {
-        update.image = request.img;
+        update.image = idBlog.img;
     }
 
     return prismaClient.post.update({
@@ -151,6 +149,7 @@ const updateBlog = async (user, id, request) => {
         data: {
             title: update.title,
             content: update.content,
+            category: update.category,
             img: update.image,
             updated_at: new Date(),
         },
