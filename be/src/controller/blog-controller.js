@@ -86,10 +86,29 @@ const deleteBlog = async (req, res, next) => {
     }
 };
 
+const searchBlog = async (req, res, next) => {
+    try {
+        const request = {
+            title: req.query.title,
+        };
+
+        if (!request.title) {
+            throw new ResponseError(400, "The 'title' parameter is required for searching");
+        }
+
+        const result = await blogService.searchBlog(request);
+
+        response(200, result, "get data search", res);
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
     getBlog,
     getBlogId,
     createBlog,
     updateBlog,
     deleteBlog,
+    searchBlog,
 };

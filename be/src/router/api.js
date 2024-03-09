@@ -9,6 +9,7 @@ const route = new express.Router();
 // public
 route.get("/blogs", blogController.getBlog);
 route.get("/blog/:id", blogController.getBlogId);
+route.get("/blog/", blogController.searchBlog);
 route.post("/user/register/", userController.register);
 route.post("/user/login/", userController.login);
 

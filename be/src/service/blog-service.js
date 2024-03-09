@@ -4,6 +4,7 @@ import { ResponseError } from "../response/response-error.js";
 import {
     createBlogValidation,
     getIdBlogValidation,
+    searchBlogValidation,
     updateBlogValidation,
 } from "../validation/blog-validation.js";
 import { validate } from "../validation/validation.js";
@@ -193,10 +194,38 @@ const deleteBlog = async (id) => {
     });
 };
 
+const searchBlog = async (query) => {
+    query = validate(searchBlogValidation, query);
+
+    const filters = [];
+
+    if (query.title) {
+        filters.push({
+            title: {
+                contains: query.title,
+            },
+        });
+    }
+
+    console.log(filters);
+    const data = await prismaClient.post.findMany({
+        where: {
+            AND: filters,
+        },
+    });
+
+    if (data.length === 0) {
+        throw new ResponseError(404, "No results found");
+    }
+
+    return data;
+};
+
 export default {
     getBlog,
     getBlogId,
     createBlog,
     updateBlog,
     deleteBlog,
+    searchBlog,
 };

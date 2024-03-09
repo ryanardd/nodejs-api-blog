@@ -15,3 +15,7 @@ export const updateBlogValidation = Joi.object({
     category: Joi.number().optional(),
     image: Joi.any().optional(),
 });
+
+export const searchBlogValidation = Joi.object({
+    title: Joi.string().optional(),
+});
