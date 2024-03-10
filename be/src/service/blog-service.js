@@ -3,6 +3,7 @@ import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../response/response-error.js";
 import {
     createBlogValidation,
+    getBlogValidation,
     getIdBlogValidation,
     searchBlogValidation,
     updateBlogValidation,
@@ -10,13 +11,38 @@ import {
 import { validate } from "../validation/validation.js";
 import fs from "fs";
 
-const getBlog = async () => {
-    return prismaClient.user.findMany({
+const getBlog = async (page, limit) => {
+    // next page
+    const next = (page - 1) * limit;
+
+    const totalBLog = await prismaClient.post.count({});
+
+    const totalPage = Math.ceil(totalBLog / limit);
+
+    const data = await prismaClient.post.findMany({
+        take: limit,
+        skip: next,
         select: {
-            name: true,
-            post: true,
+            id_post: true,
+            title: true,
+            content: true,
+            img: true,
+            created_at: true,
+            updated_at: true,
+            category: true,
+            user: true,
         },
     });
+
+    return {
+        data: data,
+        paging: {
+            page: page,
+            limit: limit,
+            total_blog: totalBLog,
+            total_page: totalPage,
+        },
+    };
 };
 
 const getBlogId = async (params) => {

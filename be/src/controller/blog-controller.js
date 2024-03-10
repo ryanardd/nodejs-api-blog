@@ -6,7 +6,11 @@ import fs from "fs";
 
 const getBlog = async (req, res, next) => {
     try {
-        const result = await blogService.getBlog();
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const result = await blogService.getBlog(page, limit);
+
         response(200, result, "get all data blog", res);
     } catch (error) {
         next(error);

@@ -7,6 +7,11 @@ export const createBlogValidation = Joi.object({
     image: Joi.any().required(),
 });
 
+export const getBlogValidation = Joi.object({
+    page: Joi.number().min(1).positive().default(1),
+    size: Joi.number().min(1).max(100).positive().default(10),
+});
+
 export const getIdBlogValidation = Joi.number().positive().required();
 
 export const updateBlogValidation = Joi.object({
