@@ -1,9 +1,7 @@
-import path from "path";
 import { prismaClient } from "../app/database.js";
 import { ResponseError } from "../response/response-error.js";
 import {
     createBlogValidation,
-    getBlogValidation,
     getIdBlogValidation,
     searchBlogValidation,
     updateBlogValidation,
@@ -11,15 +9,38 @@ import {
 import { validate } from "../validation/validation.js";
 import fs from "fs";
 
-const getBlog = async (page, limit) => {
-    // next page
+const getBlog = async (page, search) => {
+    // number of blog posts per page
+    const limit = 10;
+
+    // formula when going to the next page
     const next = (page - 1) * limit;
 
+    // counting total blog posts
     const totalBLog = await prismaClient.post.count({});
 
+    // counting total pages
     const totalPage = Math.ceil(totalBLog / limit);
 
+    // validation of searching
+    search = validate(searchBlogValidation, search);
+
+    // accommodate keyword search
+    const filters = [];
+
+    if (search.title) {
+        filters.push({
+            title: {
+                // keywords that contain
+                contains: search.title,
+            },
+        });
+    }
+
     const data = await prismaClient.post.findMany({
+        where: {
+            AND: filters,
+        },
         take: limit,
         skip: next,
         select: {
@@ -30,9 +51,19 @@ const getBlog = async (page, limit) => {
             created_at: true,
             updated_at: true,
             category: true,
-            user: true,
+            user: {
+                select: {
+                    id_user: true,
+                    username: true,
+                    email: true,
+                },
+            },
         },
     });
+
+    if (data.length === 0) {
+        throw new ResponseError(404, "No results found");
+    }
 
     return {
         data: data,
@@ -220,38 +251,10 @@ const deleteBlog = async (id) => {
     });
 };
 
-const searchBlog = async (query) => {
-    query = validate(searchBlogValidation, query);
-
-    const filters = [];
-
-    if (query.title) {
-        filters.push({
-            title: {
-                contains: query.title,
-            },
-        });
-    }
-
-    console.log(filters);
-    const data = await prismaClient.post.findMany({
-        where: {
-            AND: filters,
-        },
-    });
-
-    if (data.length === 0) {
-        throw new ResponseError(404, "No results found");
-    }
-
-    return data;
-};
-
 export default {
     getBlog,
     getBlogId,
     createBlog,
     updateBlog,
     deleteBlog,
-    searchBlog,
 };

@@ -9,9 +9,10 @@ const route = new express.Router();
 // public
 route.get("/blogs", blogController.getBlog);
 route.get("/blog/:id", blogController.getBlogId);
-route.get("/blogs/search/", blogController.searchBlog);
 route.post("/user/register/", userController.register);
 route.post("/user/login/", userController.login);
+route.get("/category", categoryController.get);
+route.get("/category/:id", categoryController.getId);
 
 // users
 route.use(authMiddleware);
@@ -20,8 +21,6 @@ route.patch("/user/updated/:id", userController.update);
 route.delete("/user/logout", userController.logout);
 
 // categories
-route.get("/category", categoryController.get);
-route.get("/category/:id", categoryController.getId);
 route.post("/category/add", categoryController.add);
 route.patch("/category/updated/:id", categoryController.update);
 route.delete("/category/:id", categoryController.remove);

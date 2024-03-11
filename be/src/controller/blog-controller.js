@@ -1,4 +1,3 @@
-import path from "path";
 import { ResponseError } from "../response/response-error.js";
 import { response } from "../response/response.js";
 import blogService from "../service/blog-service.js";
@@ -7,9 +6,12 @@ import fs from "fs";
 const getBlog = async (req, res, next) => {
     try {
         const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
 
-        const result = await blogService.getBlog(page, limit);
+        const search = {
+            title: req.query.title,
+        };
+
+        const result = await blogService.getBlog(page, search);
 
         response(200, result, "get all data blog", res);
     } catch (error) {
@@ -54,14 +56,13 @@ const createBlog = async (req, res, next) => {
 
 const updateBlog = async (req, res, next) => {
     try {
-        // di ambil dari auth-middleware
+        // taken from auth-middleware
         const user = req.user;
 
         const idBlog = req.params.id;
         const title = req.body.title;
         const content = req.body.content;
         const category = req.body.category;
-        // const image = req.file?.path;
         const image = req.file?.filename;
 
         const result = await blogService.updateBlog(user, idBlog, {
@@ -90,29 +91,10 @@ const deleteBlog = async (req, res, next) => {
     }
 };
 
-const searchBlog = async (req, res, next) => {
-    try {
-        const request = {
-            title: req.query.title,
-        };
-
-        if (!request.title) {
-            throw new ResponseError(400, "The 'title' parameter is required for searching");
-        }
-
-        const result = await blogService.searchBlog(request);
-
-        response(200, result, "get data search", res);
-    } catch (error) {
-        next(error);
-    }
-};
-
 export default {
     getBlog,
     getBlogId,
     createBlog,
     updateBlog,
     deleteBlog,
-    searchBlog,
 };
