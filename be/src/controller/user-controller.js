@@ -43,7 +43,7 @@ const login = async (req, res, next) => {
 
 const update = async (req, res, next) => {
     try {
-        const id = req.params.id;
+        const id = req.user.id_user;
         const request = req.body;
 
         const result = await userService.update(id, request);

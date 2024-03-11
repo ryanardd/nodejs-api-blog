@@ -156,6 +156,12 @@ const updateBlog = async (user, id, request) => {
         where: {
             id_user: user.id_user,
         },
+        select: {
+            id_user: true,
+            username: true,
+            name: true,
+            email: true,
+        },
     });
 
     if (!user) {
@@ -166,12 +172,20 @@ const updateBlog = async (user, id, request) => {
 
     const idBlog = await prismaClient.post.findFirst({
         where: {
-            id_post: id,
+            AND: [
+                {
+                    id_post: id,
+                },
+
+                {
+                    author_id: user.id_user,
+                },
+            ],
         },
     });
 
     if (!idBlog) {
-        throw new ResponseError(404, "id is not found");
+        throw new ResponseError(404, "Blog not found or you don't have permission to update it");
     }
 
     request = validate(updateBlogValidation, request);
@@ -189,7 +203,6 @@ const updateBlog = async (user, id, request) => {
     if (request.category) {
         update.category = request.category;
     }
-    console.log(idBlog.img);
 
     if (request.image !== undefined && request.image !== "") {
         update.image = `public/image/${request.image}`;
@@ -229,17 +242,41 @@ const updateBlog = async (user, id, request) => {
     });
 };
 
-const deleteBlog = async (id) => {
+const deleteBlog = async (user, id) => {
+    user = await prismaClient.user.findUnique({
+        where: {
+            id_user: user.id_user,
+        },
+        select: {
+            id_user: true,
+            username: true,
+            name: true,
+            email: true,
+        },
+    });
+
+    if (!user) {
+        throw new ResponseError(404, "user is not found");
+    }
+
     id = validate(getIdBlogValidation, id);
 
     const data = await prismaClient.post.findFirst({
         where: {
-            id_post: id,
+            AND: [
+                {
+                    id_post: id,
+                },
+
+                {
+                    author_id: user.id_user,
+                },
+            ],
         },
     });
 
     if (!data) {
-        throw new ResponseError(404, "data is not found");
+        throw new ResponseError(404, "Blog not found or you don't have permission to delete it");
     }
 
     fs.unlinkSync(data.img);

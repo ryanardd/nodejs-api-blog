@@ -82,9 +82,10 @@ const updateBlog = async (req, res, next) => {
 
 const deleteBlog = async (req, res, next) => {
     try {
+        const user = req.user;
         const id = req.params.id;
 
-        const result = await blogService.deleteBlog(id);
+        const result = await blogService.deleteBlog(user, id);
         response(200, result, "deleted blog successfully", res);
     } catch (error) {
         next(error);

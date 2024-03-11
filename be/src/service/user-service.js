@@ -16,7 +16,11 @@ const get = async (id) => {
         where: {
             id_user: id,
         },
-        include: {
+        select: {
+            id_user: true,
+            name: true,
+            username: true,
+            email: true,
             post: true,
         },
     });

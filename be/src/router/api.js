@@ -17,7 +17,7 @@ route.get("/category/:id", categoryController.getId);
 // users
 route.use(authMiddleware);
 route.get("/user/current", userController.get);
-route.patch("/user/updated/:id", userController.update);
+route.patch("/user/updated/current", userController.update);
 route.delete("/user/logout", userController.logout);
 
 // categories
