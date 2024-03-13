@@ -10,12 +10,41 @@ This project is a RESTful API for a blog application that comes with a login fea
 - Searching: Users can perform post-searches based on specific keywords.
 - Pagination: The API provides pagination to split search results or post lists into multiple pages.
 
-## Technology Used
-- Node.js: Uses Node.js as the main runtime to run the API.
-- Express.js: Web framework for creating APIs easily and quickly.
-- JSON Web Token (JWT): Used for user authentication.
-- Bcrypt: Used to encrypt the user's password.
-- Multer:  Used to handle multipart/form data, which is used to upload image files.
-- Joi: Used to validate requests.
-- MySQL: Relational database for storing application data.
-- Prisma: ORM (Object-Relational Mapping) to interact with the MySQL database.
+
+## Tech Stack
+| **Technology** |  **Description**               |
+| :-------- | :---------------------------------- |
+|Programming Languages          |Javascript (Node.js)|
+|Framework                      |Express.js|
+|Database                       | MySQL|
+|ORM (Object-Relational Mapping)| Prisma|
+|Authentication                 |JSON Web Token (JWT)|
+|Middleware for Upload File     |Multer|
+|Request Validation             |Joi|
+|Encrypting Password            |Bcrypt|
+
+# Getting Started
+## Installation
+Open a terminal or command prompt and clone the blog API project repository from GitHub.
+```
+git clone <project>
+```
+Navigate to the directory of the project that was just cloned.
+
+Run the `npm install` command to install all the required dependencies.
+```
+npm install
+```
+### Environment Variables
+To run this project, you will need to add the following environment variables to your `.env` file
+```
+DATABASE_URL="mysql://user:password@host:port/database"
+
+ACCESS_TOKEN_SECRET = "secret"
+```
+
+## How to run
+Once all dependencies are installed, run the command to start the API server.
+```
+npm run dev
+```
